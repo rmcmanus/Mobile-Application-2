@@ -1,0 +1,232 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="@string/default_player_title"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </TextView>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/number_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:text="@string/default_number"
+            android:textSize="25sp"
+            android:textStyle="bold" >
+
+        </TextView>
+        
+        <TextView
+            android:id="@+id/position_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_position"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </TextView>
+        
+        <TextView
+            android:id="@+id/throws_bats_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_throws_bats"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </TextView>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/col_1_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:text="@string/default_col_1"
+            android:textSize="15sp"
+            android:textStyle="bold" >
+
+        </TextView>
+        
+        <TextView
+            android:id="@+id/col_2_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_col_2"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </TextView>
+        
+        <TextView
+            android:id="@+id/col_3_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_col_3"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </TextView>
+        
+        <TextView
+            android:id="@+id/col_4_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:text="@string/default_col_4"
+            android:textSize="15sp"
+            android:textStyle="bold" >
+
+        </TextView>
+        
+        <TextView
+            android:id="@+id/col_5_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_col_5"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </TextView>
+        
+        <TextView
+            android:id="@+id/col_6_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_col_6"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </TextView>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" >
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/stat_1_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:text="@string/default_stat_1"
+            android:textSize="15sp"
+            android:textStyle="bold" >
+
+        </EditText>
+        
+        <EditText
+            android:inputType="number"
+            android:id="@+id/stat_2_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_stat_2"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </EditText>
+        
+        <EditText
+            android:inputType="number"
+            android:id="@+id/stat_3_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_stat_3"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </EditText>
+        
+        <EditText
+            android:inputType="number"
+            android:id="@+id/stat_4_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:text="@string/default_stat_4"
+            android:textSize="15sp"
+            android:textStyle="bold" >
+
+        </EditText>
+        
+        <EditText
+            android:inputType="number"
+            android:id="@+id/stat_5_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_stat_5"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </EditText>
+        
+        <EditText
+            android:inputType="number"
+            android:id="@+id/stat_6_text_view"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:text="@string/default_stat_6"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_height="wrap_content" >
+        </EditText>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/stats_update_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_alignParentBottom="true"
+            android:text="@string/update" />
+    </RelativeLayout>
+
+</LinearLayout>

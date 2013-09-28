@@ -22,6 +22,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationtwo.SelectPlayerActivity"
+            android:label="@string/title_activity_select_player"
+            android:parentActivityName="edu.mines.rmcmanus.dhunter.applicationtwo.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.mines.rmcmanus.dhunter.applicationtwo.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationtwo.StatsActivity"
+            android:label="@string/title_activity_stats" >
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationtwo.AddPlayerActivity"
+            android:label="@string/title_activity_add_player"
+            android:parentActivityName="edu.mines.rmcmanus.dhunter.applicationtwo.SelectPlayerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.mines.rmcmanus.dhunter.applicationtwo.SelectPlayerActivity" />
+        </activity>
     </application>
 
 </manifest>

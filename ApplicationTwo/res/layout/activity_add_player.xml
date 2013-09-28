@@ -15,7 +15,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:text="@string/team_list_title"
+            android:text="@string/add_player"
             android:textStyle="bold"
             android:textSize="25sp"
             android:gravity="center"
@@ -25,35 +25,53 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight=".5"
-        android:layout_height="0dp" >
+        android:layout_height="wrap_content" >
 
-        <ListView
-            android:id="@+id/team_list"
+        <EditText
+            android:id="@+id/name_edit_text"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:hint="@string/name_hint" >
+        </EditText>        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" >
+
+        <EditText
+            android:id="@+id/position_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/position_hint"
+            android:layout_weight=".5" >
+
+        </EditText>
+        
+        <EditText
+            android:id="@+id/number_edit_text"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_weight=".5"
+            android:hint="@string/number_hint"
             android:layout_height="wrap_content" >
-        </ListView>
+        </EditText>
+        
+      
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/add_team_button"
-            android:layout_width="wrap_content"
+            android:id="@+id/stats_update_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
             android:textStyle="bold"
-            android:text="@string/add_button" />
-
-        <Button
-            android:id="@+id/delete_team_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:textStyle="bold"
-            android:text="@string/delete_button" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:text="@string/update" />
+    </RelativeLayout>
 
 </LinearLayout>

@@ -4,5 +4,33 @@
     <string name="app_name">ApplicationTwo</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="add_button">Add</string>
+    <string name="delete_button">Delete</string>
+    <string name="team_list_title">Select A Team</string>
+    <string name="title_activity_select_player">SelectPlayerActivity</string>
+    <string name="default_team_name">Team</string>
+    <string name="title_activity_stats">StatsActivity</string>
+    <string name="default_player_title">Player</string>
+    <string name="default_number">###</string>
+    <string name="default_position">Pos</string>
+    <string name="default_throws_bats">R/R</string>
+    <string name="update">Update</string>
+    <string name="default_col_1">Col1</string>
+    <string name="default_col_2">Col2</string>
+    <string name="default_col_3">Col3</string>
+    <string name="default_col_4">Col4</string>
+    <string name="default_col_5">Col5</string>
+    <string name="default_col_6">Col6</string>
+    <string name="default_stat_1">1</string>
+    <string name="default_stat_2">2</string>
+    <string name="default_stat_3">3</string>
+    <string name="default_stat_4">4</string>
+    <string name="default_stat_5">5</string>
+    <string name="default_stat_6">6</string>
+    <string name="title_activity_add_player">AddPlayerActivity</string>
+    <string name="add_player">Enter Player Details</string>
+    <string name="name_hint">Name</string>
+    <string name="number_hint">Number</string>
+    <string name="position_hint">Position</string>
 
 </resources>
