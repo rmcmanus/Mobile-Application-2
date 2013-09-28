@@ -35,5 +35,17 @@
     <string name="test_team">Team </string>
     <string name="test_player">Player </string>
     <string name="done_button">Done</string>
+    
+    <string-array name="position_array">
+        <item>Pitcher</item>
+        <item>Catcher</item>
+        <item>1st Base</item>
+        <item>2nd Base</item>
+        <item>3rd Base</item>
+        <item>Shortstop</item>
+        <item>Left Field</item>
+        <item>Center Field</item>
+        <item>Right Field</item>
+    </string-array>
 
 </resources>

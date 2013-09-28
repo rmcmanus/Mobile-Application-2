@@ -2,20 +2,22 @@ package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import java.util.ArrayList;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
 
 public class SelectPlayerActivity extends Activity {
 
@@ -23,6 +25,8 @@ public class SelectPlayerActivity extends Activity {
 	public final static String EXTRA_PLAYER_NUMBER = "edu.mines.rmcmanus.dhunter.app2.PLAYERNUMBER";
 	public String[] numberArray;
 	public String[] playerArray;
+	
+	private Button addButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,15 @@ public class SelectPlayerActivity extends Activity {
 			}
 		});
 		
+		addButton = (Button) findViewById(R.id.add_player_button);
+		addButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				addPlayer();
+			}
+		});
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -67,6 +80,11 @@ public class SelectPlayerActivity extends Activity {
 		playerInfoIntent.putExtra(EXTRA_PLAYER_NAME, playerArray[number]);
 		playerInfoIntent.putExtra(EXTRA_PLAYER_NUMBER, numberArray[number]);
 		startActivity(playerInfoIntent);
+	}
+	
+	public void addPlayer() {
+		Intent addPlayerIntent = new Intent(this, AddPlayerActivity.class);
+		startActivity(addPlayerIntent);
 	}
 
 	/**
