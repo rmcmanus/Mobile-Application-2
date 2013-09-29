@@ -1,15 +1,9 @@
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import java.util.ArrayList;
-
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -33,92 +27,73 @@ public class SelectPlayerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_player);
 		
+		//receives the team name from the previous activity
 		Intent intent = getIntent();
 		String teamName = intent.getStringExtra(MainActivity.EXTRA_TEAM_NAME);
 		TextView teamNameView = (TextView) findViewById(R.id.team_name_label);
 		teamNameView.setText(teamName);
 		
+		//sets up an array list with dummy data
 		ArrayList<String> players = new ArrayList<String>();
 		for (int i = 0; i < 5; ++i) {
 			players.add(getString(R.string.test_player) + Integer.toString(i));
 		}
+		
 		String[] playerString = new String[players.size()];
 		numberArray = new String[players.size()];
 		playerArray = new String[players.size()];
+		//populates an array for the string that will be displayed in the list view
+		//as well as an array for dummy player names and numbers
 		for (int i = 0; i < playerString.length; ++i) {
 			numberArray[i] = Integer.toString(i + 5);
 			playerString[i] = players.get(i) + "\t #" + numberArray[i];
 			playerArray[i] = players.get(i);
 		}
+		//creates an array adapter from the array initialized above
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, playerString);
+		//fills the list view
 		ListView playerList = (ListView) findViewById(R.id.player_list);
 		playerList.setAdapter(arrayAdapter);
 		playerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView parent, View v, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				//calls selected player with the view that was clicked and the position in the list
+				//that was clicked
 				selectedPlayer(v, position);
 			}
 		});
 		
 		addButton = (Button) findViewById(R.id.add_player_button);
+		//sets up a listener for the add player button
 		addButton.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View arg0) {
+				//calls the add player function
 				addPlayer();
 			}
 		});
-		
-		// Show the Up button in the action bar.
-		setupActionBar();
 	}
 	
+	/**
+	 * This function takes the item in the player list that was selected and passes the
+	 * player name and their number to the next activity. 
+	 * 
+	 * @param v The view that was clicked on inside of the list view.
+	 * @param number The number of the player that was clicked on in the list view
+	 */
 	public void selectedPlayer(View v, int number) {
 		Intent playerInfoIntent = new Intent(this, StatsActivity.class);
-//		TextView tv = (TextView) v;
-//		playerInfoIntent.putExtra(EXTRA_PLAYER_NAME, (String) tv.getText());
 		playerInfoIntent.putExtra(EXTRA_PLAYER_NAME, playerArray[number]);
 		playerInfoIntent.putExtra(EXTRA_PLAYER_NUMBER, numberArray[number]);
 		startActivity(playerInfoIntent);
 	}
 	
+	/**
+	 * This function is called when the add button is pressed.  It starts the add
+	 * player activity.
+	 */
 	public void addPlayer() {
 		Intent addPlayerIntent = new Intent(this, AddPlayerActivity.class);
 		startActivity(addPlayerIntent);
 	}
-
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.select_player, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 }
