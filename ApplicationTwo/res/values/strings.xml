@@ -47,5 +47,15 @@
         <item>Center Field</item>
         <item>Right Field</item>
     </string-array>
+    
+    <string-array name="direction_array">
+        <item>Right</item>
+        <item>Left</item>
+    </string-array>
+    
+    <string name="player_position">Position: </string>
+    <string name="player_number">Number: </string>
+    <string name="player_throw">Throwing side: </string>
+    <string name="player_hit">Hitting side: </string>
 
 </resources>
