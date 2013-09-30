@@ -14,11 +14,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,8 +27,6 @@ public class SelectPlayerActivity extends Activity {
 	public final static String EXTRA_SELECT_PLAYER_PASSED = "edu.mines.rmcmanus.dhunter.app2.SELECTPLAYERPASSED";
 	public String[] numberArray;
 	public String[] playerArray;
-	
-	private Button addButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +69,15 @@ public class SelectPlayerActivity extends Activity {
 			}
 		});
 		
-		addButton = (Button) findViewById(R.id.add_player_button);
-		//sets up a listener for the add player button
-		addButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				//calls the add player function
-				addPlayer();
-			}
-		});
+//		addButton = (Button) findViewById(R.id.add_player_button);
+//		//sets up a listener for the add player button
+//		addButton.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				//calls the add player function
+//				addPlayer();
+//			}
+//		});
 	}
 	
 	/**
@@ -103,7 +99,7 @@ public class SelectPlayerActivity extends Activity {
 	 * This function is called when the add button is pressed.  It starts the add
 	 * player activity.
 	 */
-	public void addPlayer() {
+	public void addPlayer(View v) {
 		Intent addPlayerIntent = new Intent(this, AddPlayerActivity.class);
 		startActivity(addPlayerIntent);
 	}

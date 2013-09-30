@@ -46,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:textStyle="bold"
-            android:text="@string/add_button" />
+            android:text="@string/add_button"
+            android:onClick="addPlayer" />
 
         <Button
             android:id="@+id/delete_player_button"

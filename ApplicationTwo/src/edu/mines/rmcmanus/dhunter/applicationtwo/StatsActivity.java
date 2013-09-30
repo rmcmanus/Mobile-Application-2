@@ -40,7 +40,7 @@ public class StatsActivity extends Activity {
 		Intent intent = getIntent();
 		boolean selectPassed = intent.getBooleanExtra(SelectPlayerActivity.EXTRA_SELECT_PLAYER_PASSED, false);
 		boolean addPassed = intent.getBooleanExtra(AddPlayerActivity.EXTRA_ADD_PLAYER_PASSED, false);
-		String playerName = "", playerNumber = "";
+		String playerName = "", playerNumber = "", playerPosition = "", playerBats = "", playerThrows = "";
 		if (selectPassed) {
 			playerName = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_NAME);
 			playerNumber = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_NUMBER);
@@ -48,6 +48,13 @@ public class StatsActivity extends Activity {
 		else if (addPassed) {
 			playerName = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_NAME);
 			playerNumber = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_NUMBER);
+			playerPosition = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_POSITION);
+			playerBats = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_BATS);
+			playerThrows = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_THROWS);
+			TextView playerPositionView = (TextView) findViewById(R.id.position_text_view);
+			playerPositionView.setText(playerPosition);
+			TextView playerBatsThrowsView = (TextView) findViewById(R.id.throws_bats_text_view);
+			playerBatsThrowsView.setText(playerThrows.toCharArray()[0] + "/" + playerBats.toCharArray()[0]);
 		}
 		TextView playerNameView = (TextView) findViewById(R.id.player_label);
 		TextView playerNumberView = (TextView) findViewById(R.id.number_text_view);

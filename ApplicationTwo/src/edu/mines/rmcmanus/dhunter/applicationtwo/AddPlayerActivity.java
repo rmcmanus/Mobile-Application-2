@@ -14,6 +14,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -56,7 +58,20 @@ public class AddPlayerActivity extends Activity {
 		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.position_array, android.R.layout.simple_spinner_dropdown_item);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		positionSpinner.setAdapter(arrayAdapter);
-		playerPosition = (String) positionSpinner.getSelectedItem();
+		positionSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				playerPosition = arg0.getItemAtPosition(arg2).toString();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				playerPosition = arg0.getItemAtPosition(0).toString();
+			}
+			
+		});
 	}
 	
 	/**
@@ -74,13 +89,26 @@ public class AddPlayerActivity extends Activity {
 	public void populateNumberSpinner() {
 		Spinner numberSpinner = (Spinner) findViewById(R.id.number_edit_text);
 		
-		ArrayList<String> numberArray = new ArrayList<String>();
-		numberArray = populateNumberArray(numberArray);
+		final ArrayList<String> numberArray = new ArrayList<String>();
+		populateNumberArray(numberArray);
 		
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, numberArray);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		numberSpinner.setAdapter(arrayAdapter);
-		playerNumber = numberSpinner.getSelectedItem().toString();
+		numberSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				playerNumber = numberArray.get(arg2);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				playerNumber = numberArray.get(0);
+			}
+			
+		});
 	}
 	
 	/**
@@ -101,9 +129,35 @@ public class AddPlayerActivity extends Activity {
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		throwSpinner.setAdapter(arrayAdapter);
+		throwSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				playerThrows = arg0.getItemAtPosition(arg2).toString();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				playerThrows = arg0.getItemAtPosition(0).toString();
+			}
+			
+		});
 		hitSpinner.setAdapter(arrayAdapter);
-		playerThrows = (String) throwSpinner.getSelectedItem();
-		playerBats = (String) hitSpinner.getSelectedItem();
+		hitSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				playerBats = arg0.getItemAtPosition(arg2).toString();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				playerBats = arg0.getItemAtPosition(0).toString();
+			}
+			
+		});
 	}
 	
 	/**
@@ -111,9 +165,8 @@ public class AddPlayerActivity extends Activity {
 	 * passed ArrayList object.
 	 * 
 	 * @param numberArray 	The parameter passed to store numbers generated
-	 * @return 				Returns the array populated with strings
 	 */
-	public ArrayList<String> populateNumberArray(ArrayList<String> numberArray) {
+	public void populateNumberArray(ArrayList<String> numberArray) {
 		for (int i = 0; i < 100; i++) {
 			if (i < 10) {
 				numberArray.add("0"+i);
@@ -122,9 +175,15 @@ public class AddPlayerActivity extends Activity {
 				numberArray.add(Integer.toString(i));
 			}
 		}
-		return numberArray;	
 	}
 	
+	/**
+	 * This function checks to make sure that the user entered a name for the player, 
+	 * and if they did then the StatsActivity is called with all the information that the
+	 * user put in.
+	 * 
+	 * @param v
+	 */
 	public void commitPlayer(View v) {
 		EditText name = (EditText) findViewById(R.id.name_edit_text);
 		if (name.getText().toString().matches("")) {
