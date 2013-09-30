@@ -28,8 +28,10 @@ public class StatsActivity extends Activity {
 	public EditText stat5;
 	public EditText stat6;
 	public EditText[] editArray;
+	
 	public Button updateDoneButton;
 	public boolean doneEditing = false;
+	public String playerName = "", playerNumber = "", playerPosition = "", playerBats = "", playerThrows = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,6 @@ public class StatsActivity extends Activity {
 		Intent intent = getIntent();
 		boolean selectPassed = intent.getBooleanExtra(SelectPlayerActivity.EXTRA_SELECT_PLAYER_PASSED, false);
 		boolean addPassed = intent.getBooleanExtra(AddPlayerActivity.EXTRA_ADD_PLAYER_PASSED, false);
-		String playerName = "", playerNumber = "", playerPosition = "", playerBats = "", playerThrows = "";
 		if (selectPassed) {
 			playerName = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_NAME);
 			playerNumber = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_NUMBER);
@@ -81,6 +82,8 @@ public class StatsActivity extends Activity {
 		updateDoneButton = (Button) findViewById(R.id.stats_update_button);
 		//calls the function to disable all of the edit text views
 		makeDisabled();
+		
+		checkPlayerPosition(playerPosition);
 	}
 	
 	/**
@@ -124,6 +127,40 @@ public class StatsActivity extends Activity {
 			makeEnabled();
 			updateDoneButton.setText(getString(R.string.done_button));
 			doneEditing = true;
+		}
+	}
+	
+	/**
+	 * This function grabs every TextView that is on the stats page of a player, and changes the heading based on which
+	 * position that player plays. If the player is a pitcher, then the view updates with pitcher-specific information
+	 * populated by our database (final release). These include IP, W/L, SO, etc. Otherwise it changes the headings for
+	 * fielder, which include HR, R, H, AVG, etc. These are also populated by our database (final release).
+	 * 
+	 * @param playerPosition	Current player position defined either by a new player being added or in selecting a player
+	 */
+	public void checkPlayerPosition(String playerPosition) {
+		TextView col1 = (TextView) findViewById(R.id.col_1_text_view);
+		TextView col2 = (TextView) findViewById(R.id.col_2_text_view);
+		TextView col3 = (TextView) findViewById(R.id.col_3_text_view);
+		TextView col4 = (TextView) findViewById(R.id.col_4_text_view);
+		TextView col5 = (TextView) findViewById(R.id.col_5_text_view);
+		TextView col6 = (TextView) findViewById(R.id.col_6_text_view);
+		
+		if (playerPosition.equals(getString(R.string.pitcher_test))) {
+			col1.setText(getString(R.string.pitcher_ip));
+			col2.setText(getString(R.string.pitcher_w));
+			col3.setText(getString(R.string.pitcher_l));
+			col4.setText(getString(R.string.pitcher_era));
+			col5.setText(getString(R.string.pitcher_so));
+			col6.setText(getString(R.string.pitcher_whip));
+		}
+		else {
+			col1.setText(getString(R.string.fielder_ab));
+			col2.setText(getString(R.string.fielder_r));
+			col3.setText(getString(R.string.fielder_h));
+			col4.setText(getString(R.string.fielder_hr));
+			col5.setText(getString(R.string.fielder_rbi));
+			col6.setText(getString(R.string.fielder_avg));
 		}
 	}
 }

@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SelectPlayerActivity extends Activity {
 
@@ -69,15 +70,6 @@ public class SelectPlayerActivity extends Activity {
 			}
 		});
 		
-//		addButton = (Button) findViewById(R.id.add_player_button);
-//		//sets up a listener for the add player button
-//		addButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				//calls the add player function
-//				addPlayer();
-//			}
-//		});
 	}
 	
 	/**
@@ -102,5 +94,14 @@ public class SelectPlayerActivity extends Activity {
 	public void addPlayer(View v) {
 		Intent addPlayerIntent = new Intent(this, AddPlayerActivity.class);
 		startActivity(addPlayerIntent);
+	}
+	
+	/**
+	 * This is a throwaway function to let the user know that this application is not
+	 * yet complete.
+	 * @param v The parameter is the view (item) from the team list that is clicked on
+	 */
+	public void functionalityMissing(View v) {
+		Toast.makeText(getApplicationContext(), "This functionality is not available yet!", Toast.LENGTH_SHORT).show();
 	}
 }

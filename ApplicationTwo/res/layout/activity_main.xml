@@ -45,7 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:textStyle="bold"
-            android:text="@string/add_button" />
+            android:text="@string/add_button"
+            android:onClick="functionalityMissing" />
 
         <Button
             android:id="@+id/delete_team_button"
@@ -53,7 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:textStyle="bold"
-            android:text="@string/delete_button" />
+            android:text="@string/delete_button"
+            android:onClick="functionalityMissing" />
     </LinearLayout>
 
 </LinearLayout>

@@ -182,7 +182,7 @@ public class AddPlayerActivity extends Activity {
 	 * and if they did then the StatsActivity is called with all the information that the
 	 * user put in.
 	 * 
-	 * @param v
+	 * @param v This is the view of the Done {@link Button} that is pressed when the user is done entering player information
 	 */
 	public void commitPlayer(View v) {
 		EditText name = (EditText) findViewById(R.id.name_edit_text);

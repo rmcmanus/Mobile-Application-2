@@ -25,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
@@ -71,5 +72,14 @@ public class MainActivity extends Activity {
 		TextView tv = (TextView) v;
 		playerIntent.putExtra(EXTRA_TEAM_NAME, (String) tv.getText());
 		startActivity(playerIntent);
+	}
+	
+	/**
+	 * This is a throwaway function to let the user know that this application is not
+	 * yet complete.
+	 * @param v The parameter is the view (item) from the team list that is clicked on
+	 */
+	public void functionalityMissing(View v) {
+		Toast.makeText(getApplicationContext(), "This functionality is not available yet!", Toast.LENGTH_SHORT).show();
 	}
 }
