@@ -1,12 +1,36 @@
+/**
+ * Description:  This class defines the implementation of the add player view.  This code
+ * populates a number of spinners with both string array data in strings.xml and dynamically
+ * created ints that are cast as Strings
+ * 
+ * @author Ryan McManus, David Hunter
+ */
+
+
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import java.util.ArrayList;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class AddPlayerActivity extends Activity {
+	
+	private String playerPosition;
+	private String playerNumber;
+	private String playerThrows;
+	private String playerBats;
+	public final static String EXTRA_PLAYER_NAME = "edu.mines.rmcmanus.dhunter.app2.PLAYERNAME";
+	public final static String EXTRA_PLAYER_NUMBER = "edu.mines.rmcmanus.dhunter.app2.PLAYERNUMBER";
+	public final static String EXTRA_PLAYER_POSITION = "edu.mines.rmcmanus.dhunter.app2.PLAYERPOSITION";
+	public final static String EXTRA_PLAYER_THROWS = "edu.mines.rmcmanus.dhunter.app2.PLAYERTHROWS";
+	public final static String EXTRA_PLAYER_BATS = "edu.mines.rmcmanus.dhunter.app2.PLAYERBATS";
+	public final static String EXTRA_ADD_PLAYER_PASSED = "edu.mines.rmcmanus.dhunter.app2.ADDPLAYERPASSED";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +56,7 @@ public class AddPlayerActivity extends Activity {
 		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.position_array, android.R.layout.simple_spinner_dropdown_item);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		positionSpinner.setAdapter(arrayAdapter);
+		playerPosition = (String) positionSpinner.getSelectedItem();
 	}
 	
 	/**
@@ -55,6 +80,7 @@ public class AddPlayerActivity extends Activity {
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, numberArray);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		numberSpinner.setAdapter(arrayAdapter);
+		playerNumber = numberSpinner.getSelectedItem().toString();
 	}
 	
 	/**
@@ -76,6 +102,8 @@ public class AddPlayerActivity extends Activity {
 		
 		throwSpinner.setAdapter(arrayAdapter);
 		hitSpinner.setAdapter(arrayAdapter);
+		playerThrows = (String) throwSpinner.getSelectedItem();
+		playerBats = (String) hitSpinner.getSelectedItem();
 	}
 	
 	/**
@@ -95,6 +123,23 @@ public class AddPlayerActivity extends Activity {
 			}
 		}
 		return numberArray;	
+	}
+	
+	public void commitPlayer(View v) {
+		EditText name = (EditText) findViewById(R.id.name_edit_text);
+		if (name.getText().toString().matches("")) {
+			Toast.makeText(getApplicationContext(), "You must enter a player name", Toast.LENGTH_SHORT).show(); 
+		}
+		else {
+			Intent intent = new Intent(this, StatsActivity.class);
+			intent.putExtra(EXTRA_PLAYER_NAME, name.getText().toString());
+			intent.putExtra(EXTRA_PLAYER_NUMBER, playerNumber);
+			intent.putExtra(EXTRA_PLAYER_POSITION, playerPosition.toString());
+			intent.putExtra(EXTRA_PLAYER_THROWS, playerThrows.toString());
+			intent.putExtra(EXTRA_PLAYER_BATS, playerBats.toString());
+			intent.putExtra(EXTRA_ADD_PLAYER_PASSED, true);
+			startActivity(intent);
+		}
 	}
 
 }

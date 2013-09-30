@@ -1,3 +1,12 @@
+/**
+ * Description:  This class is used to list out the players that are on the team that was
+ * selected in the MainActivity.  For our final submission, these names will be dynamically
+ * selected from our underlying SQLite database.  For now the list contains dummy data
+ * 
+ * @author Ryan McManus, David Hunter
+ */
+
+
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import java.util.ArrayList;
@@ -17,6 +26,7 @@ public class SelectPlayerActivity extends Activity {
 
 	public final static String EXTRA_PLAYER_NAME = "edu.mines.rmcmanus.dhunter.app2.PLAYERNAME";
 	public final static String EXTRA_PLAYER_NUMBER = "edu.mines.rmcmanus.dhunter.app2.PLAYERNUMBER";
+	public final static String EXTRA_SELECT_PLAYER_PASSED = "edu.mines.rmcmanus.dhunter.app2.SELECTPLAYERPASSED";
 	public String[] numberArray;
 	public String[] playerArray;
 	
@@ -85,6 +95,7 @@ public class SelectPlayerActivity extends Activity {
 		Intent playerInfoIntent = new Intent(this, StatsActivity.class);
 		playerInfoIntent.putExtra(EXTRA_PLAYER_NAME, playerArray[number]);
 		playerInfoIntent.putExtra(EXTRA_PLAYER_NUMBER, numberArray[number]);
+		playerInfoIntent.putExtra(EXTRA_SELECT_PLAYER_PASSED, true);
 		startActivity(playerInfoIntent);
 	}
 	

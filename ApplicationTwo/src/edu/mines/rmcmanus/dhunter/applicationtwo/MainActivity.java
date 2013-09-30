@@ -1,3 +1,18 @@
+/**
+* Description: This class is used to load a list of teams into a ListView.  This is the
+* initial view when the application is loaded.  For the final submission the teams will
+* be loaded dynamically from a SQLite database stored locally on the device.  Right now
+* the list is populated with dummy data.
+*
+* Point Distribution: We agree on a 50/50 point distribution
+*
+* Documentation Statement: We here by solemnly swear that we did not cheat.  We used StackOverflow
+* for small examples of how code segments should be implemented (ie. ArrayAdapters for arrays in xml) 
+*
+* @author Ryan McManus, David Hunter
+*/
+
+
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import java.util.ArrayList;
