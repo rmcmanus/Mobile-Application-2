@@ -9,38 +9,70 @@
 
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
-import java.util.ArrayList;
-import android.app.Activity;
+import android.annotation.TargetApi;
+import android.app.ListActivity;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SelectPlayerActivity extends Activity {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class SelectPlayerActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	public final static String EXTRA_PLAYER_NAME = "edu.mines.rmcmanus.dhunter.app2.PLAYERNAME";
 	public final static String EXTRA_PLAYER_NUMBER = "edu.mines.rmcmanus.dhunter.app2.PLAYERNUMBER";
+	public final static String EXTRA_PLAYER_TEAM = "edu.mines.rmcmanus.dhunter.app2.PLAYERTEAM";
+	public final static String EXTRA_PLAYER_THROW = "edu.mines.rmcmanus.dhunter.app2.PLAYERTHROW";
+	public final static String EXTRA_PLAYER_HIT = "edu.mines.rmcmanus.dhunter.app2.PLAYERHIT";
+
 	public final static String EXTRA_SELECT_PLAYER_PASSED = "edu.mines.rmcmanus.dhunter.app2.SELECTPLAYERPASSED";
 	public String[] numberArray;
 	public String[] playerArray;
+	
+	private SQLiteOpenHelper sqlHelper = null;
+	private DatabaseCursorLoader dbLoader = null;
+	private SimpleCursorAdapter cursorAdapter = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_player);
 		
-
+		
 		//receives the team name from the previous activity
 		Intent intent = getIntent();
 		String teamName = intent.getStringExtra(MainActivity.EXTRA_TEAM_NAME);
 		TextView teamNameView = (TextView) findViewById(R.id.team_name_label);
 		teamNameView.setText(teamName);
 		
+		String[] from = new String[] {DatabaseSQLiteHelper.COLUMN_PLAYER_NAME, DatabaseSQLiteHelper.COLUMN_PLAYER_NUMBER, 
+				DatabaseSQLiteHelper.COLUMN_PLAYER_THROW, DatabaseSQLiteHelper.COLUMN_PLAYER_HIT};
+		int[] to = new int[] {R.id.player_name_label, R.id.player_number_label, R.id.player_throws_label, R.id.player_hits_label};
+		
+		this.sqlHelper = new PlayerSQLiteHelper(this);
+		this.cursorAdapter = new SimpleCursorAdapter(this, R.layout.player_row, null, from, to, 0);
+		
+		//ListView lv = (ListView) findViewById(android.R.id.list);
+		setListAdapter(this.cursorAdapter);
+		//lv.setAdapter(cursorAdapter);
+	    //lv.setDividerHeight(2);
+
+	    // Asynchronously load the data.
+	    loadData();
+		
+		
+/***************************************************************************************/
+/*****************************Dummy Data Below******************************************/
 		/*
 		//sets up an array list with dummy data
 		ArrayList<String> players = new ArrayList<String>();
@@ -75,6 +107,35 @@ public class SelectPlayerActivity extends Activity {
 		
 	}
 	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		this.sqlHelper.close();
+	}
+	
+	@Override
+	protected void onListItemClick( ListView listview, View view, int position, long id ) {
+		Log.d( "ToDo: " + this.getClass().getName(), "onListItemClick() ..." );
+	    super.onListItemClick( listview, view, position, id );
+	    
+	    Intent playerIntent = new Intent(this, StatsActivity.class);
+	    SQLiteCursor sql = (SQLiteCursor) listview.getAdapter().getItem(position);
+	    
+	    String playerName = sql.getString(sql.getColumnIndex("name"));
+	    String playerNumber = sql.getString(sql.getColumnIndex("number"));
+	    String teamName = sql.getString(sql.getColumnIndex("team"));
+	    String playerThrow = sql.getString(sql.getColumnIndex("throw"));
+	    String playerHit = sql.getString(sql.getColumnIndex("hit"));
+	    
+	    playerIntent.putExtra(EXTRA_PLAYER_NAME, playerName);
+	    playerIntent.putExtra(EXTRA_PLAYER_NUMBER, playerNumber);
+	    playerIntent.putExtra(EXTRA_PLAYER_TEAM, teamName);
+	    playerIntent.putExtra(EXTRA_PLAYER_THROW, playerThrow);
+	    playerIntent.putExtra(EXTRA_PLAYER_HIT, playerHit);
+	    
+	    startActivity(playerIntent);
+	}
+	
 	/**
 	 * This function takes the item in the player list that was selected and passes the
 	 * player name and their number to the next activity. 
@@ -107,4 +168,25 @@ public class SelectPlayerActivity extends Activity {
 	public void functionalityMissing(View v) {
 		Toast.makeText(getApplicationContext(), "This functionality is not available yet!", Toast.LENGTH_SHORT).show();
 	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		this.dbLoader = new DatabaseCursorLoader(this, this.sqlHelper, PlayerSQLiteHelper.DATABASE_QUERY_SUMMARY, null);
+	    return this.dbLoader;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		this.cursorAdapter.swapCursor(data);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		this.cursorAdapter.swapCursor(null);
+	}
+	
+	private void loadData() {
+	    Log.d("ToDo: " + this.getClass().getName(), "loadData() ... " + "Thread ID: " + Thread.currentThread().getId());
+	    getLoaderManager().initLoader( 0, null, this ); // Ensure a loader is initialized and active.
+	  }
 }

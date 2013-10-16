@@ -26,8 +26,7 @@
     <ListView
         android:id="@android:id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_team" >
+        android:layout_height="wrap_content" >
     </ListView>
 
     <LinearLayout

@@ -3,7 +3,6 @@ package edu.mines.rmcmanus.dhunter.applicationtwo;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;

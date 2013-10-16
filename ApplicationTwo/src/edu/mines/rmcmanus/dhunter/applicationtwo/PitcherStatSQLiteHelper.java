@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PitcherStatSQLiteHelper extends SQLiteOpenHelper{
 	
 	public static final String TABLE_PITCHERS = "pitchers";
-	public static final String COLUMN_ID = "_id";
+	public static final String PITCHERS_COLUMN_ID = "_id";
 	public static final String COLUMN_PITCHER_NAME = "name";
 	public static final String COLUMN_PITCHER_IP = "ip";
 	public static final String COLUMN_PITCHER_WINS = "wins";
@@ -19,9 +19,9 @@ public class PitcherStatSQLiteHelper extends SQLiteOpenHelper{
 	private static final String DATABASE_NAME = "statkeeper.db";
 	private static final int DATABASE_VERSION = 1;
 	
-	private static final String TEAM_DATABASE_CREATE = 
+	private static final String PITCHER_TABLE_CREATE = 
 			"create table " + TABLE_PITCHERS + "(" +
-			COLUMN_ID + "integer primary key autoincrement, " +
+			PITCHERS_COLUMN_ID + "integer primary key autoincrement, " +
 			COLUMN_PITCHER_NAME + " text not null " +
 			COLUMN_PITCHER_IP + " text not null " +
 			COLUMN_PITCHER_WINS + " text not null " +
@@ -38,7 +38,7 @@ public class PitcherStatSQLiteHelper extends SQLiteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		db.execSQL(TEAM_DATABASE_CREATE);
+		db.execSQL(PITCHER_TABLE_CREATE);
 	}
 
 	@Override

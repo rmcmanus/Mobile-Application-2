@@ -20,7 +20,6 @@ import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -52,8 +51,8 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 		
 		setContentView(R.layout.activity_main);
 		
-		this.sqlHelper = new TeamSQLiteHelper(this);
-		this.cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_row, null, new String[] {TeamSQLiteHelper.COLUMN_TEAM_NAME}, new int[] {R.id.team_label}, 0);
+		this.sqlHelper = new DatabaseSQLiteHelper(this);
+		this.cursorAdapter = new SimpleCursorAdapter(this, R.layout.team_row, null, new String[] {DatabaseSQLiteHelper.COLUMN_TEAM_NAME}, new int[] {R.id.team_label}, 0);
 		
 		//ListView lv = (ListView) findViewById(android.R.id.list);
 		setListAdapter(this.cursorAdapter);
@@ -142,8 +141,8 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 					Toast.makeText(getApplicationContext(), "No Team Added", Toast.LENGTH_SHORT).show();
 				} else {
 					ContentValues values = new ContentValues();
-				    values.put(TeamSQLiteHelper.COLUMN_TEAM_NAME, teamNameInsert);
-					dbLoader.insert(TeamSQLiteHelper.TABLE_TEAMS, TeamSQLiteHelper.COLUMN_TEAM_NAME, values);
+				    values.put(DatabaseSQLiteHelper.COLUMN_TEAM_NAME, teamNameInsert);
+					dbLoader.insert(DatabaseSQLiteHelper.TABLE_TEAMS, DatabaseSQLiteHelper.COLUMN_TEAM_NAME, values);
 				}
 			}
 		});
@@ -163,7 +162,7 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		this.dbLoader = new DatabaseCursorLoader(this, this.sqlHelper, TeamSQLiteHelper.DATABASE_QUERY_SUMMARY, null);
+		this.dbLoader = new DatabaseCursorLoader(this, this.sqlHelper, DatabaseSQLiteHelper.TEAMS_QUERY_SUMMARY, null);
 	    return this.dbLoader;
 	}
 
