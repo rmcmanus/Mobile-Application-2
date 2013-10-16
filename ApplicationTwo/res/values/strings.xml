@@ -38,6 +38,7 @@
     <string name="pitcher_test">Pitcher</string>
     
     <string name="add_team">Add a team!</string>
+    <string name="add_team_dialog_hint">Team Name</string>
     
     <string-array name="position_array">
         <item>Pitcher</item>

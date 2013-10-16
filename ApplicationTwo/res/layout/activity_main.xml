@@ -41,7 +41,7 @@
             android:layout_weight=".5"
             android:textStyle="bold"
             android:text="@string/add_button"
-            android:onClick="functionalityMissing" />
+            android:onClick="addTeam" />
 
         <Button
             android:id="@+id/delete_team_button"

@@ -19,6 +19,10 @@ package edu.mines.rmcmanus.dhunter.applicationtwo;
 import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -117,6 +121,32 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 	 */
 	public void functionalityMissing(View v) {
 		Toast.makeText(getApplicationContext(), "This functionality is not available yet!", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void addTeam(View v) {
+		final CustomDialog cd = new CustomDialog(this);
+		cd.show();
+		cd.setCanceledOnTouchOutside(true);
+//		cd.setOnCancelListener(new OnCancelListener() {
+//			
+//			@Override
+//			public void onCancel(DialogInterface dialog) {
+//				Toast.makeText(getApplicationContext(), "No Team Added", Toast.LENGTH_SHORT).show();
+//			}
+//		});
+		cd.setOnDismissListener(new OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface arg0) {
+				String teamNameInsert = cd.getTeamName();
+				if (teamNameInsert.equals("")) {
+					Toast.makeText(getApplicationContext(), "No Team Added", Toast.LENGTH_SHORT).show();
+				} else {
+					ContentValues values = new ContentValues();
+				    values.put(TeamSQLiteHelper.COLUMN_TEAM_NAME, teamNameInsert);
+					dbLoader.insert(TeamSQLiteHelper.TABLE_TEAMS, TeamSQLiteHelper.COLUMN_TEAM_NAME, values);
+				}
+			}
+		});
 	}
 	
 	@Override
