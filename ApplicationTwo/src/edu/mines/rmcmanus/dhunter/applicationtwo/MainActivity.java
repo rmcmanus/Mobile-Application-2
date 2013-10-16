@@ -1,3 +1,5 @@
+// This application was tested on a Nexus 4
+// This application was tested on API 17
 /**
 * Description: This class is used to load a list of teams into a ListView.  This is the
 * initial view when the application is loaded.  For the final submission the teams will
@@ -12,30 +14,56 @@
 * @author Ryan McManus, David Hunter
 */
 
-
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
-import java.util.ArrayList;
-import android.os.Bundle;
-import android.app.Activity;
+import android.annotation.TargetApi;
+import android.app.ListActivity;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class MainActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 	
 	public final static String EXTRA_TEAM_NAME = "edu.mines.rmcmanus.dhunter.app2.TEAMNAME";
+	
+	private SQLiteOpenHelper sqlHelper = null;
+	private DatabaseCursorLoader dbLoader = null;
+	private SimpleCursorAdapter cursorAdapter = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_main);
+		
+		this.sqlHelper = new TeamSQLiteHelper(this);
+		this.cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_row, null, new String[] {TeamSQLiteHelper.COLUMN_TEAM_NAME}, new int[] {R.id.team_label}, 0);
+		
+		//ListView lv = (ListView) findViewById(android.R.id.list);
+		setListAdapter(this.cursorAdapter);
+		//lv.setAdapter(cursorAdapter);
+	    //lv.setDividerHeight(2);
+
+	    // Asynchronously load the data.
+	    loadData();
+		
+		
+/***************************************************************************************/
+/*****************************Dummy Data Below******************************************/
+	    /*
+	     
 		//adds some dummy data to an array list to test the ListView
 		ArrayList<String> teams = new ArrayList<String>();
 		for (int i = 0; i < 5; ++i) {
@@ -59,6 +87,14 @@ public class MainActivity extends Activity {
 				selectedTeam(v);
 			}
 		});
+		
+		*/
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		this.sqlHelper.close();
 	}
 	
 	/**
@@ -82,4 +118,38 @@ public class MainActivity extends Activity {
 	public void functionalityMissing(View v) {
 		Toast.makeText(getApplicationContext(), "This functionality is not available yet!", Toast.LENGTH_SHORT).show();
 	}
+	
+	@Override
+	protected void onListItemClick( ListView listview, View view, int position, long id ) {
+		Log.d( "ToDo: " + this.getClass().getName(), "onListItemClick() ..." );
+	    super.onListItemClick( listview, view, position, id );
+	    
+	    Intent playerIntent = new Intent(this, SelectPlayerActivity.class);
+	    SQLiteCursor sql = (SQLiteCursor) listview.getAdapter().getItem(position);
+	    String teamName = sql.getString(sql.getColumnIndex("name"));
+	    playerIntent.putExtra(EXTRA_TEAM_NAME, teamName);
+	    startActivity(playerIntent);
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		this.dbLoader = new DatabaseCursorLoader(this, this.sqlHelper, TeamSQLiteHelper.DATABASE_QUERY_SUMMARY, null);
+	    return this.dbLoader;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		this.cursorAdapter.swapCursor(data);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		this.cursorAdapter.swapCursor(null);
+	}
+	
+	private void loadData()
+	  {
+	    Log.d("ToDo: " + this.getClass().getName(), "loadData() ... " + "Thread ID: " + Thread.currentThread().getId());
+	    getLoaderManager().initLoader( 0, null, this ); // Ensure a loader is initialized and active.
+	  }
 }

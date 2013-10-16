@@ -37,6 +37,8 @@
     <string name="done_button">Done</string>
     <string name="pitcher_test">Pitcher</string>
     
+    <string name="add_team">Add a team!</string>
+    
     <string-array name="position_array">
         <item>Pitcher</item>
         <item>Catcher</item>

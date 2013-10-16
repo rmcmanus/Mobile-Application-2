@@ -34,12 +34,14 @@ public class SelectPlayerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_player);
 		
+
 		//receives the team name from the previous activity
 		Intent intent = getIntent();
 		String teamName = intent.getStringExtra(MainActivity.EXTRA_TEAM_NAME);
 		TextView teamNameView = (TextView) findViewById(R.id.team_name_label);
 		teamNameView.setText(teamName);
 		
+		/*
 		//sets up an array list with dummy data
 		ArrayList<String> players = new ArrayList<String>();
 		for (int i = 0; i < 5; ++i) {
@@ -69,6 +71,7 @@ public class SelectPlayerActivity extends Activity {
 				selectedPlayer(v, position);
 			}
 		});
+		*/
 		
 	}
 	
