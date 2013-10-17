@@ -27,7 +27,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -229,6 +228,28 @@ public class AddPlayerActivity extends Activity implements LoaderManager.LoaderC
 		    values.put(DatabaseSQLiteHelper.COLUMN_PLAYER_THROW, playerThrows.toString());
 		    values.put(DatabaseSQLiteHelper.COLUMN_PLAYER_HIT, playerBats.toString());
 			dbLoader.insert(DatabaseSQLiteHelper.TABLE_PLAYERS, DatabaseSQLiteHelper.COLUMN_PLAYER_NAME, values);
+			
+			ContentValues stats = new ContentValues();
+			if (playerPosition.equals(getString(R.string.pitcher_test))) {
+				stats.put(DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, name.getText().toString());
+				stats.put(DatabaseSQLiteHelper.COLUMN_PITCHER_IP, 0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_PITCHER_WINS, 0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_PITCHER_LOSES, 0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_PITCHER_ERA,  0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_PITCHER_SO, 0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_PITCHER_WHIP, 0);
+				dbLoader.insert(DatabaseSQLiteHelper.TABLE_PITCHERS, DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, stats);
+			} else {
+				stats.put(DatabaseSQLiteHelper.COLUMN_FIELDER_NAME, name.getText().toString());
+				stats.put(DatabaseSQLiteHelper.COLUMN_FIELDER_AT_BAT, 0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_FIELDER_RUNS, 0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_FIELDER_HITS, 0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_FIELDER_HOME_RUNS,  0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_FIELDER_RBI, 0);
+			    stats.put(DatabaseSQLiteHelper.COLUMN_FIELDER_AVG, 0);
+				dbLoader.insert(DatabaseSQLiteHelper.TABLE_FIELDERS, DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, stats);
+			}
+			
 			
 			startActivity(intent);
 		}

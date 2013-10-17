@@ -59,46 +59,12 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 		this.sqlHelper = new DatabaseSQLiteHelper(this);
 		this.cursorAdapter = new SimpleCursorAdapter(this, R.layout.team_row, null, new String[] {DatabaseSQLiteHelper.COLUMN_TEAM_NAME}, new int[] {R.id.team_label}, 0);
 		
-		//ListView lv = (ListView) findViewById(android.R.id.list);
 		setListAdapter(this.cursorAdapter);
-		//lv.setAdapter(cursorAdapter);
-	    //lv.setDividerHeight(2);
 
 		registerForContextMenu(this.getListView());
 		
 	    // Asynchronously load the data.
 	    loadData();
-		
-		
-/***************************************************************************************/
-/*****************************Dummy Data Below******************************************/
-	    /*
-	     
-		//adds some dummy data to an array list to test the ListView
-		ArrayList<String> teams = new ArrayList<String>();
-		for (int i = 0; i < 5; ++i) {
-			teams.add(getString(R.string.test_team) + Integer.toString(i));
-		}
-		String[] teamArray = new String[teams.size()];
-		//Converts the array list into an array for use with the ArrayAdapter
-		for (int i = 0; i < teamArray.length; ++i) {
-			teamArray[i] = teams.get(i);
-		}
-		//creates an array adapter with a simple list view, and the array of dummy teams
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, teamArray);
-		//finds the list view and sets the array adapter to the adapter initialized above
-		ListView teamList = (ListView) findViewById(R.id.team_list);
-		teamList.setAdapter(arrayAdapter);
-		teamList.setOnItemClickListener(new OnItemClickListener() {
-			//listens for a item in the list to be clicked on
-			@Override
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				//calls selected team with the view that was pressed
-				selectedTeam(v);
-			}
-		});
-		
-		*/
 	}
 	
 	@Override

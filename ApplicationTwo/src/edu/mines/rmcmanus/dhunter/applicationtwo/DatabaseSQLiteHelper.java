@@ -26,10 +26,10 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
 	public static final String TABLE_FIELDERS = "fielders";
 	public static final String FIELDERS_COLUMN_ID = "_id";
 	public static final String COLUMN_FIELDER_NAME = "name";
-	public static final String COLUMN_FIELDER_AT_BAT = "at bats";
+	public static final String COLUMN_FIELDER_AT_BAT = "atbats";
 	public static final String COLUMN_FIELDER_RUNS = "runs";
 	public static final String COLUMN_FIELDER_HITS = "hits";
-	public static final String COLUMN_FIELDER_HOME_RUNS = "home runs";
+	public static final String COLUMN_FIELDER_HOME_RUNS = "homeruns";
 	public static final String COLUMN_FIELDER_RBI = "rbi";
 	public static final String COLUMN_FIELDER_AVG = "avg";
 	

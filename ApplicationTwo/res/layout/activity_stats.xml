@@ -223,12 +223,25 @@
 
         <Button
             android:id="@+id/stats_update_button"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_alignParentBottom="true"
             android:text="@string/update"
+            android:textAlignment="center"
             android:onClick="update" />
+        
+        <Button
+            android:id="@+id/stats_done_button"
+            android:layout_width="150dp"
+            android:layout_toRightOf="@id/stats_update_button"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/done_button"
+            android:onClick="finished" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -124,6 +124,10 @@ public class StatsActivity extends Activity implements LoaderManager.LoaderCallb
 		loadData();
 	}
 	
+	@Override
+	public void onBackPressed() {
+	}
+	
 	/**
 	 * This function iterated through each of the edit text views and disables them so that
 	 * the user cannot edit the values.
@@ -158,41 +162,63 @@ public class StatsActivity extends Activity implements LoaderManager.LoaderCallb
 			makeDisabled();
 			updateDoneButton.setText(getString(R.string.update));
 			doneEditing = false;
-			
-			String stat1 = ((EditText) findViewById(R.id.stat_1_text_view)).getText().toString();
-			String stat2 = ((EditText) findViewById(R.id.stat_2_text_view)).getText().toString();
-			String stat3 = ((EditText) findViewById(R.id.stat_3_text_view)).getText().toString();
-			String stat4 = ((EditText) findViewById(R.id.stat_4_text_view)).getText().toString();
-			String stat5 = ((EditText) findViewById(R.id.stat_5_text_view)).getText().toString();
-			String stat6 = ((EditText) findViewById(R.id.stat_6_text_view)).getText().toString();
-			
-			String[] test = new String[] {playerName};
-			Log.d("Debug", playerName);
-			
-			ContentValues values = new ContentValues();
-			if (pitcherSelection) {
-				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, playerName);
-				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_IP, stat1);
-				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_WINS, stat2);
-				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_LOSES, stat3);
-				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_ERA, stat4);
-				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_SO, stat5);
-				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_WHIP, stat6);
-				
-				if (cursorAdapter.getCount() > 0)
-					dbLoader.update(DatabaseSQLiteHelper.TABLE_PITCHERS, values, "name = ?", test);
-				else {
-					dbLoader.insert(DatabaseSQLiteHelper.TABLE_PITCHERS, DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, values);
-				}
-			}
+			saveToDb();
 		} 
 		//If the user is in not in edit mode and the button is press, change the text of the
 		//button to done and enable the edit text boxes for editing.
 		else {
 			makeEnabled();
-			updateDoneButton.setText(getString(R.string.done_button));
+			updateDoneButton.setText(getString(R.string.save_button));
 			doneEditing = true;
 		}
+	}
+	
+	public void saveToDb() {
+		String stat1 = ((EditText) findViewById(R.id.stat_1_text_view)).getText().toString();
+		String stat2 = ((EditText) findViewById(R.id.stat_2_text_view)).getText().toString();
+		String stat3 = ((EditText) findViewById(R.id.stat_3_text_view)).getText().toString();
+		String stat4 = ((EditText) findViewById(R.id.stat_4_text_view)).getText().toString();
+		String stat5 = ((EditText) findViewById(R.id.stat_5_text_view)).getText().toString();
+		String stat6 = ((EditText) findViewById(R.id.stat_6_text_view)).getText().toString();
+		
+		String[] test = new String[] {playerName};
+		Log.d("Debug", playerName);
+		
+		ContentValues values = new ContentValues();
+		if (pitcherSelection) {
+			values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, playerName);
+			values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_IP, stat1);
+			values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_WINS, stat2);
+			values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_LOSES, stat3);
+			values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_ERA, stat4);
+			values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_SO, stat5);
+			values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_WHIP, stat6);
+			
+			if (cursorAdapter.getCount() > 0)
+				dbLoader.update(DatabaseSQLiteHelper.TABLE_PITCHERS, values, "name = ?", test);
+			else {
+				dbLoader.insert(DatabaseSQLiteHelper.TABLE_PITCHERS, DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, values);
+			}
+		} else {
+			values.put(DatabaseSQLiteHelper.COLUMN_FIELDER_NAME, playerName);
+			values.put(DatabaseSQLiteHelper.COLUMN_FIELDER_AT_BAT, stat1);
+			values.put(DatabaseSQLiteHelper.COLUMN_FIELDER_RUNS, stat2);
+			values.put(DatabaseSQLiteHelper.COLUMN_FIELDER_HITS, stat3);
+			values.put(DatabaseSQLiteHelper.COLUMN_FIELDER_HOME_RUNS, stat4);
+			values.put(DatabaseSQLiteHelper.COLUMN_FIELDER_RBI, stat5);
+			values.put(DatabaseSQLiteHelper.COLUMN_FIELDER_AVG, stat6);
+			
+			if (cursorAdapter.getCount() > 0)
+				dbLoader.update(DatabaseSQLiteHelper.TABLE_FIELDERS, values, "name = ?", test);
+			else {
+				dbLoader.insert(DatabaseSQLiteHelper.TABLE_FIELDERS, DatabaseSQLiteHelper.COLUMN_FIELDER_NAME, values);
+			}
+		}
+	}
+	
+	public void finished(View v) {
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
 	}
 	
 	/**
@@ -267,24 +293,35 @@ public class StatsActivity extends Activity implements LoaderManager.LoaderCallb
 	
 	public void setEditText() {
 		SQLiteCursor sql = (SQLiteCursor) cursorAdapter.getItem(0);
-	    String ip = sql.getString(sql.getColumnIndex("ip"));
-	    String wins = sql.getString(sql.getColumnIndex("wins"));
-	    String loses = sql.getString(sql.getColumnIndex("loses"));
-	    String era = sql.getString(sql.getColumnIndex("era"));
-	    String so = sql.getString(sql.getColumnIndex("so"));
-	    String whip = sql.getString(sql.getColumnIndex("whip"));
+		String stat1, stat2, stat3, stat4, stat5, stat6;
+		if (pitcherSelection) {
+			stat1 = sql.getString(sql.getColumnIndex("ip"));
+		    stat2 = sql.getString(sql.getColumnIndex("wins"));
+		    stat3 = sql.getString(sql.getColumnIndex("loses"));
+		    stat4 = sql.getString(sql.getColumnIndex("era"));
+		    stat5 = sql.getString(sql.getColumnIndex("so"));
+		    stat6 = sql.getString(sql.getColumnIndex("whip"));
+		} else {
+			stat1 = sql.getString(sql.getColumnIndex(DatabaseSQLiteHelper.COLUMN_FIELDER_AT_BAT));
+		    stat2 = sql.getString(sql.getColumnIndex(DatabaseSQLiteHelper.COLUMN_FIELDER_RUNS));
+		    stat3 = sql.getString(sql.getColumnIndex(DatabaseSQLiteHelper.COLUMN_FIELDER_HITS));
+		    stat4 = sql.getString(sql.getColumnIndex(DatabaseSQLiteHelper.COLUMN_FIELDER_HOME_RUNS));
+		    stat5 = sql.getString(sql.getColumnIndex(DatabaseSQLiteHelper.COLUMN_FIELDER_RBI));
+		    stat6 = sql.getString(sql.getColumnIndex(DatabaseSQLiteHelper.COLUMN_FIELDER_AVG));
+		}
+	    
 	    
 	    EditText col1 = (EditText) findViewById(R.id.stat_1_text_view);
-	    col1.setText(ip);
+	    col1.setText(stat1);
 	    EditText col2 = (EditText) findViewById(R.id.stat_2_text_view);
-	    col2.setText(wins);
+	    col2.setText(stat2);
 	    EditText col3 = (EditText) findViewById(R.id.stat_3_text_view);
-	    col3.setText(loses);
+	    col3.setText(stat3);
 	    EditText col4 = (EditText) findViewById(R.id.stat_4_text_view);
-	    col4.setText(era);
+	    col4.setText(stat4);
 	    EditText col5 = (EditText) findViewById(R.id.stat_5_text_view);
-	    col5.setText(so);
+	    col5.setText(stat5);
 	    EditText col6 = (EditText) findViewById(R.id.stat_6_text_view);
-	    col6.setText(whip);
+	    col6.setText(stat6);
 	}
 }
