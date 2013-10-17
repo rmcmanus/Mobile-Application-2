@@ -27,6 +27,9 @@
     <string name="default_stat_4">4</string>
     <string name="default_stat_5">5</string>
     <string name="default_stat_6">6</string>
+    
+    <string name="default_0">0</string>
+    
     <string name="title_activity_add_player">AddPlayerActivity</string>
     <string name="add_player">Enter Player Details</string>
     <string name="name_hint">Name</string>
@@ -58,6 +61,12 @@
         <item>Left</item>
     </string-array>
     
+    <string name="player_select_name">Name</string>
+    <string name="player_select_position">Position</string>
+    <string name="player_select_number">Number</string>
+    <string name="player_select_throw">Throwing</string>
+    <string name="player_select_hit">Hitting</string>
+    
     <string name="player_position">Position: </string>
     <string name="player_number">Number: </string>
     <string name="player_throw">Throwing side: </string>
@@ -76,5 +85,6 @@
     <string name="fielder_hr">HR</string>
     <string name="fielder_rbi">RBI</string>
     <string name="fielder_avg">AVG</string>
+    <string name="menu_delete">Delete</string>
 
 </resources>

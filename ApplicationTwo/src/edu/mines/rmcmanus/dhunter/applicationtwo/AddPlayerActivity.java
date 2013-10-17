@@ -10,18 +10,29 @@
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import java.util.ArrayList;
+
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class AddPlayerActivity extends Activity {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class AddPlayerActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 	
 	private String playerPosition;
 	private String playerNumber;
@@ -34,9 +45,21 @@ public class AddPlayerActivity extends Activity {
 	public final static String EXTRA_PLAYER_BATS = "edu.mines.rmcmanus.dhunter.app2.PLAYERBATS";
 	public final static String EXTRA_ADD_PLAYER_PASSED = "edu.mines.rmcmanus.dhunter.app2.ADDPLAYERPASSED";
 	
+	private DatabaseSQLiteHelper sqlHelper = null;
+	private DatabaseCursorLoader dbLoader = null;
+	
+	private String teamName = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Intent intent = getIntent();
+		teamName = intent.getStringExtra(SelectPlayerActivity.EXTRA_ADD_PLAYER_TEAM);
+		
+		this.sqlHelper = new DatabaseSQLiteHelper(this);
+		loadData();
+		
 		setContentView(R.layout.activity_add_player);
 		populatePositionSpinner();
 		populateNumberSpinner();
@@ -197,8 +220,38 @@ public class AddPlayerActivity extends Activity {
 			intent.putExtra(EXTRA_PLAYER_THROWS, playerThrows.toString());
 			intent.putExtra(EXTRA_PLAYER_BATS, playerBats.toString());
 			intent.putExtra(EXTRA_ADD_PLAYER_PASSED, true);
+			
+			ContentValues values = new ContentValues();
+		    values.put(DatabaseSQLiteHelper.COLUMN_PLAYER_NAME, name.getText().toString());
+		    values.put(DatabaseSQLiteHelper.COLUMN_PLAYER_NUMBER, playerNumber.toString());
+		    values.put(DatabaseSQLiteHelper.COLUMN_PLAYER_POSITION, playerPosition.toString());
+		    values.put(DatabaseSQLiteHelper.COLUMN_PLAYER_TEAM, teamName);
+		    values.put(DatabaseSQLiteHelper.COLUMN_PLAYER_THROW, playerThrows.toString());
+		    values.put(DatabaseSQLiteHelper.COLUMN_PLAYER_HIT, playerBats.toString());
+			dbLoader.insert(DatabaseSQLiteHelper.TABLE_PLAYERS, DatabaseSQLiteHelper.COLUMN_PLAYER_NAME, values);
+			
 			startActivity(intent);
 		}
+	}
+	
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		this.dbLoader = new DatabaseCursorLoader(this, this.sqlHelper, DatabaseSQLiteHelper.TEAMS_QUERY_SUMMARY, null);
+		return this.dbLoader;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+	}
+
+	private void loadData()
+	{
+		Log.d("ToDo: " + this.getClass().getName(), "loadData() ... " + "Thread ID: " + Thread.currentThread().getId());
+		getLoaderManager().initLoader( 0, null, this ); // Ensure a loader is initialized and active.
 	}
 
 }

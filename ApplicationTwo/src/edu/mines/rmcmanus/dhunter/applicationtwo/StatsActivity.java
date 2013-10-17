@@ -11,15 +11,25 @@
 
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class StatsActivity extends Activity {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class StatsActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	public EditText stat1;
 	public EditText stat2;
@@ -31,7 +41,12 @@ public class StatsActivity extends Activity {
 	
 	public Button updateDoneButton;
 	public boolean doneEditing = false;
+	public boolean pitcherSelection = false, fielderSelection = false;
 	public String playerName = "", playerNumber = "", playerPosition = "", playerBats = "", playerThrows = "";
+	
+	private DatabaseSQLiteHelper sqlHelper = null;
+	private DatabaseCursorLoader dbLoader = null;
+	private SimpleCursorAdapter cursorAdapter = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +60,22 @@ public class StatsActivity extends Activity {
 		if (selectPassed) {
 			playerName = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_NAME);
 			playerNumber = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_NUMBER);
+			playerPosition = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_POSITION);
+			playerThrows = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_THROW);
+			playerBats = intent.getStringExtra(SelectPlayerActivity.EXTRA_PLAYER_HIT);
 		}
 		else if (addPassed) {
 			playerName = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_NAME);
 			playerNumber = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_NUMBER);
 			playerPosition = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_POSITION);
-			playerBats = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_BATS);
 			playerThrows = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_THROWS);
-			TextView playerPositionView = (TextView) findViewById(R.id.position_text_view);
-			playerPositionView.setText(playerPosition);
-			TextView playerBatsThrowsView = (TextView) findViewById(R.id.throws_bats_text_view);
-			playerBatsThrowsView.setText(playerThrows.toCharArray()[0] + "/" + playerBats.toCharArray()[0]);
+			playerBats = intent.getStringExtra(AddPlayerActivity.EXTRA_PLAYER_BATS);
 		}
+		TextView playerPositionView = (TextView) findViewById(R.id.position_text_view);
+		playerPositionView.setText(playerPosition);
+		TextView playerBatsThrowsView = (TextView) findViewById(R.id.throws_bats_text_view);
+		playerBatsThrowsView.setText(playerThrows.toCharArray()[0] + "/" + playerBats.toCharArray()[0]);
+		
 		TextView playerNameView = (TextView) findViewById(R.id.player_label);
 		TextView playerNumberView = (TextView) findViewById(R.id.number_text_view);
 		//Sets the player name and number
@@ -84,6 +103,25 @@ public class StatsActivity extends Activity {
 		makeDisabled();
 		
 		checkPlayerPosition(playerPosition);
+		
+		String[] from = null;
+		if (pitcherSelection) {
+			from = new String[] {DatabaseSQLiteHelper.COLUMN_PITCHER_IP, DatabaseSQLiteHelper.COLUMN_PITCHER_WINS, 
+					DatabaseSQLiteHelper.COLUMN_PITCHER_LOSES, DatabaseSQLiteHelper.COLUMN_PITCHER_ERA, 
+					DatabaseSQLiteHelper.COLUMN_PITCHER_SO, DatabaseSQLiteHelper.COLUMN_PITCHER_WHIP};
+		}
+		else if (fielderSelection) {
+			from = new String[] {DatabaseSQLiteHelper.COLUMN_FIELDER_AT_BAT, DatabaseSQLiteHelper.COLUMN_FIELDER_RUNS, 
+					DatabaseSQLiteHelper.COLUMN_FIELDER_HITS, DatabaseSQLiteHelper.COLUMN_FIELDER_HOME_RUNS, 
+					DatabaseSQLiteHelper.COLUMN_FIELDER_RBI, DatabaseSQLiteHelper.COLUMN_FIELDER_AVG};
+		}
+		int[] to = new int[] {R.id.stat_1_text_view, R.id.stat_2_text_view, R.id.stat_3_text_view, R.id.stat_4_text_view,
+				R.id.stat_5_text_view, R.id.stat_6_text_view};
+		
+		this.sqlHelper = new DatabaseSQLiteHelper(this);
+		this.cursorAdapter = new SimpleCursorAdapter(this, R.layout.player_row, null, from, to, 0);
+		
+		loadData();
 	}
 	
 	/**
@@ -120,6 +158,33 @@ public class StatsActivity extends Activity {
 			makeDisabled();
 			updateDoneButton.setText(getString(R.string.update));
 			doneEditing = false;
+			
+			String stat1 = ((EditText) findViewById(R.id.stat_1_text_view)).getText().toString();
+			String stat2 = ((EditText) findViewById(R.id.stat_2_text_view)).getText().toString();
+			String stat3 = ((EditText) findViewById(R.id.stat_3_text_view)).getText().toString();
+			String stat4 = ((EditText) findViewById(R.id.stat_4_text_view)).getText().toString();
+			String stat5 = ((EditText) findViewById(R.id.stat_5_text_view)).getText().toString();
+			String stat6 = ((EditText) findViewById(R.id.stat_6_text_view)).getText().toString();
+			
+			String[] test = new String[] {playerName};
+			Log.d("Debug", playerName);
+			
+			ContentValues values = new ContentValues();
+			if (pitcherSelection) {
+				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, playerName);
+				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_IP, stat1);
+				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_WINS, stat2);
+				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_LOSES, stat3);
+				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_ERA, stat4);
+				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_SO, stat5);
+				values.put(DatabaseSQLiteHelper.COLUMN_PITCHER_WHIP, stat6);
+				
+				if (cursorAdapter.getCount() > 0)
+					dbLoader.update(DatabaseSQLiteHelper.TABLE_PITCHERS, values, "name = ?", test);
+				else {
+					dbLoader.insert(DatabaseSQLiteHelper.TABLE_PITCHERS, DatabaseSQLiteHelper.COLUMN_PITCHER_NAME, values);
+				}
+			}
 		} 
 		//If the user is in not in edit mode and the button is press, change the text of the
 		//button to done and enable the edit text boxes for editing.
@@ -147,20 +212,79 @@ public class StatsActivity extends Activity {
 		TextView col6 = (TextView) findViewById(R.id.col_6_text_view);
 		
 		if (playerPosition.equals(getString(R.string.pitcher_test))) {
-			col1.setText(getString(R.string.pitcher_ip));
-			col2.setText(getString(R.string.pitcher_w));
-			col3.setText(getString(R.string.pitcher_l));
-			col4.setText(getString(R.string.pitcher_era));
-			col5.setText(getString(R.string.pitcher_so));
-			col6.setText(getString(R.string.pitcher_whip));
+			this.setPitcherTags(col1, col2, col3, col4, col5, col6);
+			pitcherSelection = true;
 		}
 		else {
-			col1.setText(getString(R.string.fielder_ab));
-			col2.setText(getString(R.string.fielder_r));
-			col3.setText(getString(R.string.fielder_h));
-			col4.setText(getString(R.string.fielder_hr));
-			col5.setText(getString(R.string.fielder_rbi));
-			col6.setText(getString(R.string.fielder_avg));
+			this.setFielderTags(col1, col2, col3, col4, col5, col6);
+			fielderSelection = true;
 		}
+	}
+	
+	public void setPitcherTags(TextView...textViews) {
+		textViews[0].setText(getString(R.string.pitcher_ip));
+		textViews[1].setText(getString(R.string.pitcher_w));
+		textViews[2].setText(getString(R.string.pitcher_l));
+		textViews[3].setText(getString(R.string.pitcher_era));
+		textViews[4].setText(getString(R.string.pitcher_so));
+		textViews[5].setText(getString(R.string.pitcher_whip));
+	}
+	
+	public void setFielderTags(TextView...textViews) {
+		textViews[0].setText(getString(R.string.fielder_ab));
+		textViews[1].setText(getString(R.string.fielder_r));
+		textViews[2].setText(getString(R.string.fielder_h));
+		textViews[3].setText(getString(R.string.fielder_hr));
+		textViews[4].setText(getString(R.string.fielder_rbi));
+		textViews[5].setText(getString(R.string.fielder_avg));
+	}
+	
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		if (pitcherSelection) {
+			this.dbLoader = new DatabaseCursorLoader(this, this.sqlHelper, DatabaseSQLiteHelper.PITCHERS_QUERY + "'" + playerName + "'", null);
+		}
+		else if (fielderSelection)
+			this.dbLoader = new DatabaseCursorLoader(this, this.sqlHelper, DatabaseSQLiteHelper.FIELDERS_QUERY + "'" + playerName + "'", null);
+		return this.dbLoader;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		this.cursorAdapter.swapCursor(data);
+		setEditText();
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		this.cursorAdapter.swapCursor(null);
+	}
+	
+	private void loadData() {
+		Log.d("ToDo: " + this.getClass().getName(), "loadData() ... " + "Thread ID: " + Thread.currentThread().getId());
+		getLoaderManager().initLoader( 0, null, this ); // Ensure a loader is initialized and active.
+	}
+	
+	public void setEditText() {
+		SQLiteCursor sql = (SQLiteCursor) cursorAdapter.getItem(0);
+	    String ip = sql.getString(sql.getColumnIndex("ip"));
+	    String wins = sql.getString(sql.getColumnIndex("wins"));
+	    String loses = sql.getString(sql.getColumnIndex("loses"));
+	    String era = sql.getString(sql.getColumnIndex("era"));
+	    String so = sql.getString(sql.getColumnIndex("so"));
+	    String whip = sql.getString(sql.getColumnIndex("whip"));
+	    
+	    EditText col1 = (EditText) findViewById(R.id.stat_1_text_view);
+	    col1.setText(ip);
+	    EditText col2 = (EditText) findViewById(R.id.stat_2_text_view);
+	    col2.setText(wins);
+	    EditText col3 = (EditText) findViewById(R.id.stat_3_text_view);
+	    col3.setText(loses);
+	    EditText col4 = (EditText) findViewById(R.id.stat_4_text_view);
+	    col4.setText(era);
+	    EditText col5 = (EditText) findViewById(R.id.stat_5_text_view);
+	    col5.setText(so);
+	    EditText col6 = (EditText) findViewById(R.id.stat_6_text_view);
+	    col6.setText(whip);
 	}
 }

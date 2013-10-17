@@ -2,38 +2,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     tools:context=".MainActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
+        
         <TextView
             android:id="@+id/team_name_label"
             android:layout_width="match_parent"
-            android:text="@string/default_team_name"
-            android:textStyle="bold"
-            android:textSize="25sp"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_height="wrap_content" >
+            android:text="@string/default_team_name"
+            android:textSize="25sp"
+            android:textStyle="bold" >
         </TextView>
+        
     </LinearLayout>
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight=".5"
-        android:layout_height="0dp" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+        <TextView
+            android:id="@+id/player_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/player_select_name"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textStyle="bold" >
+        </TextView>
+        <TextView
+            android:id="@+id/player_number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/player_select_number"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textStyle="bold" >
+        </TextView>
+        <TextView
+            android:id="@+id/player_position_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/player_select_position"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textStyle="bold" >
+        </TextView>
+        <TextView
+            android:id="@+id/player_throws_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/player_select_throw"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textStyle="bold" >
+        </TextView>
+        <TextView
+            android:id="@+id/player_hits_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/player_select_hit"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textStyle="bold" >
+        </TextView>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".5" >
 
         <ListView
             android:id="@android:id/android:list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
         </ListView>
+        
     </LinearLayout>
 
     <LinearLayout
@@ -42,21 +102,12 @@
 
         <Button
             android:id="@+id/add_player_button"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:textStyle="bold"
+            android:onClick="addPlayer"
             android:text="@string/add_button"
-            android:onClick="addPlayer" />
-
-        <Button
-            android:id="@+id/delete_player_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:textStyle="bold"
-            android:text="@string/delete_button"
-            android:onClick="functionalityMissing" />
+            android:textStyle="bold" />
+        
     </LinearLayout>
 
 </LinearLayout>

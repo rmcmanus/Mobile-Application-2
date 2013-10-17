@@ -30,7 +30,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -59,6 +64,8 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 		//lv.setAdapter(cursorAdapter);
 	    //lv.setDividerHeight(2);
 
+		registerForContextMenu(this.getListView());
+		
 	    // Asynchronously load the data.
 	    loadData();
 		
@@ -148,6 +155,30 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 		});
 	}
 	
+	 @Override
+	  public void onCreateContextMenu( ContextMenu menu, View view, ContextMenuInfo menuInfo )
+	  {
+	    Log.d( "ToDo: " + this.getClass().getName(), "onCreateContextMenu() ..." );
+	    super.onCreateContextMenu( menu, view, menuInfo );
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate( R.menu.context_menu, menu );
+	  }
+
+	  /** Reaction to the context menu (long touch) selection */
+	  @Override
+	  public boolean onContextItemSelected( MenuItem item )
+	  {
+	    Log.d( "ToDo: " + this.getClass().getName(), "onContextItemSelected() ..." );
+	    switch( item.getItemId() )
+	    {
+	      case R.id.deleteContext:
+	        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+	        this.dbLoader.delete( DatabaseSQLiteHelper.TABLE_TEAMS, DatabaseSQLiteHelper.TEAMS_COLUMN_ID + "=" + info.id, null );
+	        return true;
+	    }
+	    return super.onContextItemSelected( item );
+	  }
+	
 	@Override
 	protected void onListItemClick( ListView listview, View view, int position, long id ) {
 		Log.d( "ToDo: " + this.getClass().getName(), "onListItemClick() ..." );
@@ -163,7 +194,7 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 		this.dbLoader = new DatabaseCursorLoader(this, this.sqlHelper, DatabaseSQLiteHelper.TEAMS_QUERY_SUMMARY, null);
-	    return this.dbLoader;
+		return this.dbLoader;
 	}
 
 	@Override
@@ -175,10 +206,10 @@ public class MainActivity extends ListActivity implements LoaderManager.LoaderCa
 	public void onLoaderReset(Loader<Cursor> loader) {
 		this.cursorAdapter.swapCursor(null);
 	}
-	
+
 	private void loadData()
-	  {
-	    Log.d("ToDo: " + this.getClass().getName(), "loadData() ... " + "Thread ID: " + Thread.currentThread().getId());
-	    getLoaderManager().initLoader( 0, null, this ); // Ensure a loader is initialized and active.
-	  }
+	{
+		Log.d("ToDo: " + this.getClass().getName(), "loadData() ... " + "Thread ID: " + Thread.currentThread().getId());
+		getLoaderManager().initLoader( 0, null, this ); // Ensure a loader is initialized and active.
+	}
 }

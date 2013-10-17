@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:gravity="center"
-            android:text="@string/default_stat_1"
+            android:text="@string/default_0"
             android:textSize="15sp"
             android:textStyle="bold" >
 
@@ -160,7 +160,7 @@
             android:id="@+id/stat_2_text_view"
             android:layout_width="match_parent"
             android:layout_weight=".5"
-            android:text="@string/default_stat_2"
+            android:text="@string/default_0"
             android:textStyle="bold"
             android:textSize="15sp"
             android:gravity="center"
@@ -172,7 +172,7 @@
             android:id="@+id/stat_3_text_view"
             android:layout_width="match_parent"
             android:layout_weight=".5"
-            android:text="@string/default_stat_3"
+            android:text="@string/default_0"
             android:textStyle="bold"
             android:textSize="15sp"
             android:gravity="center"
@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:gravity="center"
-            android:text="@string/default_stat_4"
+            android:text="@string/default_0"
             android:textSize="15sp"
             android:textStyle="bold" >
 
@@ -197,7 +197,7 @@
             android:id="@+id/stat_5_text_view"
             android:layout_width="match_parent"
             android:layout_weight=".5"
-            android:text="@string/default_stat_5"
+            android:text="@string/default_0"
             android:textStyle="bold"
             android:textSize="15sp"
             android:gravity="center"
@@ -209,7 +209,7 @@
             android:id="@+id/stat_6_text_view"
             android:layout_width="match_parent"
             android:layout_weight=".5"
-            android:text="@string/default_stat_6"
+            android:text="@string/default_0"
             android:textStyle="bold"
             android:textSize="15sp"
             android:gravity="center"
