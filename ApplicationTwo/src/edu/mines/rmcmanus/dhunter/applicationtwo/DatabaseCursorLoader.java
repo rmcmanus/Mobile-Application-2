@@ -1,9 +1,15 @@
+/**
+ * Description:  This class was acquired from the demo code in class.  Instead of "reinventing
+ * the wheel" we decided to reuse the code base.
+ * 
+ * @author Randy Bower
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.Arrays;
-
 import android.annotation.TargetApi;
 import android.content.AsyncTaskLoader;
 import android.content.ContentValues;

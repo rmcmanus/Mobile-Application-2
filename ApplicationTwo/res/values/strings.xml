@@ -27,6 +27,8 @@
     <string name="default_stat_4">4</string>
     <string name="default_stat_5">5</string>
     <string name="default_stat_6">6</string>
+    <string name="empty_team_toast">You must enter a player name</string>
+    <string name="no_team_toast">No Team Added</string>
     
     <string name="default_0">0</string>
     

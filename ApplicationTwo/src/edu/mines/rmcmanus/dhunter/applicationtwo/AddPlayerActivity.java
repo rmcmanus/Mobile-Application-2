@@ -1,7 +1,8 @@
 /**
  * Description:  This class defines the implementation of the add player view.  This code
  * populates a number of spinners with both string array data in strings.xml and dynamically
- * created ints that are cast as Strings
+ * created ints that are cast as Strings.  This class will save player information to the
+ * database.
  * 
  * @author Ryan McManus, David Hunter
  */
@@ -10,7 +11,6 @@
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import java.util.ArrayList;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager;
@@ -202,14 +202,15 @@ public class AddPlayerActivity extends Activity implements LoaderManager.LoaderC
 	/**
 	 * This function checks to make sure that the user entered a name for the player, 
 	 * and if they did then the StatsActivity is called with all the information that the
-	 * user put in.
+	 * user put in.  The function checks to see if the player is a fielder or a pitcher,
+	 * and addes them to their respective database, and initializes their stats to 0
 	 * 
 	 * @param v This is the view of the Done {@link Button} that is pressed when the user is done entering player information
 	 */
 	public void commitPlayer(View v) {
 		EditText name = (EditText) findViewById(R.id.name_edit_text);
 		if (name.getText().toString().matches("")) {
-			Toast.makeText(getApplicationContext(), "You must enter a player name", Toast.LENGTH_SHORT).show(); 
+			Toast.makeText(getApplicationContext(), getString(R.string.empty_team_toast), Toast.LENGTH_SHORT).show(); 
 		}
 		else {
 			Intent intent = new Intent(this, StatsActivity.class);

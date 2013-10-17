@@ -1,3 +1,11 @@
+/**
+ * Description:  This class defines all of the columns, tables, and SQl queries that are
+ * needed to interact with our database.  This code was adapted from the demo code that
+ * was given to us in class in order to fit the needs of our database.
+ * 
+ * @author Randy Bower.  Adapted by Ryan McManus and David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationtwo;
 
 import android.content.Context;
